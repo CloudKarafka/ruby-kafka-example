@@ -12,7 +12,7 @@ config = {
           :"security.protocol" => "SASL_SSL",
           :"sasl.mechanisms"   => "SCRAM-SHA-256"
 }
-topic = "#{ENV['CLOUDKARAFKA_TOPIC_PREFIX']}.test"
+topic = "#{ENV['CLOUDKARAFKA_TOPIC_PREFIX']}test"
 
 rdkafka = Rdkafka::Config.new(config)
 consumer = rdkafka.consumer
