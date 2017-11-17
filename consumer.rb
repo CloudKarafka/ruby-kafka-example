@@ -10,7 +10,7 @@ config = {
           :"sasl.username"     => ENV['CLOUDKARAFKA_USERNAME'],
           :"sasl.password"     => ENV['CLOUDKARAFKA_PASSWORD'],
           :"security.protocol" => "SASL_SSL",
-		  :"sasl.mechanisms"   => "SCRAM-SHA-256"
+          :"sasl.mechanisms"   => "SCRAM-SHA-256"
 }
 topic = "#{ENV['CLOUDKARAFKA_TOPIC_PREFIX']}.test"
 
