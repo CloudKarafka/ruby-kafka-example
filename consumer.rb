@@ -1,11 +1,8 @@
 require 'bundler/setup'
 require 'rdkafka'
-require 'pp'
-
-brokers = ENV['CLOUDKARAFKA_BROKERS']
 
 config = {
-          :"bootstrap.servers" => brokers,
+          :"bootstrap.servers" => ENV['CLOUDKARAFKA_BROKERS'],
           :"group.id"          => "cloudkarafka-example",
           :"sasl.username"     => ENV['CLOUDKARAFKA_USERNAME'],
           :"sasl.password"     => ENV['CLOUDKARAFKA_PASSWORD'],
