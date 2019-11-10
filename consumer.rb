@@ -2,10 +2,10 @@ require 'bundler/setup'
 require 'rdkafka'
 
 config = {
-          :"bootstrap.servers" => ENV['CLOUDKARAFKA_BROKERS'],
+          :"bootstrap.servers" => ENV.fetch('CLOUDKARAFKA_BROKERS'),
           :"group.id"          => "cloudkarafka-example",
-          :"sasl.username"     => ENV['CLOUDKARAFKA_USERNAME'],
-          :"sasl.password"     => ENV['CLOUDKARAFKA_PASSWORD'],
+          :"sasl.username"     => ENV.fetch('CLOUDKARAFKA_USERNAME'),
+          :"sasl.password"     => ENV.fetch('CLOUDKARAFKA_PASSWORD'),
           :"security.protocol" => "SASL_SSL",
           :"sasl.mechanisms"   => "SCRAM-SHA-256"
 }
