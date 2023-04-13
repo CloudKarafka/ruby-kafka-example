@@ -1,24 +1,30 @@
-require 'bundler/setup'
-require 'rdkafka'
+require "rdkafka"
 
-config = {
-          :"bootstrap.servers" => ENV['CLOUDKARAFKA_BROKERS'],
-          :"group.id"          => "cloudkarafka-example",
-          :"sasl.username"     => ENV['CLOUDKARAFKA_USERNAME'],
-          :"sasl.password"     => ENV['CLOUDKARAFKA_PASSWORD'],
-          :"security.protocol" => "SASL_SSL",
-          :"sasl.mechanisms"   => "SCRAM-SHA-256"
-}
-topic = "#{ENV['CLOUDKARAFKA_TOPIC_PREFIX']}test"
+username = ENV.fetch("CLOUDKARAFKA_USERNAME")
+password = ENV.fetch("CLOUDKARAFKA_PASSWORD")
+hostname = ENV.fetch("CLOUDKARAFKA_HOSTNAME")
+brokers = "#{hostname}:9094"
+topic = "#{username}-default"
 
-rdkafka = Rdkafka::Config.new(config)
+rdkafka = Rdkafka::Config.new(
+  "bootstrap.servers" => brokers,
+  "sasl.username" => username,
+  "sasl.password" => password,
+  "security.protocol" => "SASL_SSL",
+  "sasl.mechanisms" => "SCRAM-SHA-512"
+)
 producer = rdkafka.producer
 
-100.times do |i|
-  puts "Producing message #{i}"
-  producer.produce(
-      topic:   topic,
-      payload: "Payload #{i}",
-      key:     "Key #{i}"
-  ).wait
+puts "Producing 100 records to topic #{topic} on #{username}@#{brokers}"
+
+msg_id = 0
+batch_size = 100
+loop do
+  Array.new(batch_size).map do
+    puts "Producing message #{msg_id}"
+    payload = "My message #{msg_id}"
+    key = "key-#{msg_id}"
+    msg_id += 1
+    producer.produce(topic:, payload:, key:)
+  end.each(&:wait)
 end
